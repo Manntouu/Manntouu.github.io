@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Visualizations</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            color: white;
+            user-select: none; 
+            cursor: default; 
+        }
+
+        .circle-text {
+            user-select: none; 
+            cursor: default; 
+            fill: white; 
+        }
+    </style>
+</head>
+<body style="background-image: url('images/vis-background-img.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 100vh;">
+    <nav>
+        
+       <ul>
+           <li> <a href="index.html" class="animation">Home</a></li>
+           <li> <a href="#" class="animation">My Projects</a></li>
+           <li> <a href="visualizations.html" class="animation">Visualizations</a></li>
+       </ul>
+   </nav>
+    <header class="animation">
+        <h1 style="margin-left:5%; margin-top:2%; font-size:60px;  "> VISULIZATIONS</h1>
+        <h1 style="margin-left:5.5%; margin-top:0%; font-size:30px; font-family: 'GT Pressura Mono Trial', monospace;"> Focus Distribution: Psychology, Coding, Design</h1>
+    </header>
+
+    <main >
+        <svg id="vis" width="1300px" height="500px">
+        <circle cx="190" cy="170" r="160" fill="rgba(150, 150, 150, 0.9)" /> 
+        <text x="95" y="175" class="circle-text" style="font-size: 36px ;font-weight:400; font-family:'GT Pressura Mono Trial', monospace;">Psychology</text>
+        
+        <circle cx="485" cy="230" r="140" fill="rgba(50, 50, 50,0.95)" /> 
+        <text x="445" y="240" class="circle-text" style="font-size: 25px ;font-weight:400; font-family:'GT Pressura Mono Trial', monospace;">Coding</text>
+        
+        <circle cx="315" cy="400" r="100" fill="rgba(15, 15, 15, 0.9)" /> 
+        <text x="290" y="405" class="circle-text" style="font-size: 15px ;font-weight:400; font-family:'GT Pressura Mono Trial', monospace;" >Design</text>
+        </svg>
+    
+         
+    </main>
+
+    <script src="vis.js"></script>
+</body>
+</html>

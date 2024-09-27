@@ -1,0 +1,156 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Futura', sans-serif;
+    
+
+}
+.hero{
+    width:100%;
+    min-height:100vh;
+    background-image:url(images/background-image.gif);
+    background-position: center;
+    background-size: cover;
+    padding: 10px 10%;
+    overflow: hidden;
+    user-select: none; 
+    cursor: default; 
+}
+.logo{
+    position:absolute;
+    top: 1rem; 
+    left: 1rem;
+    
+}
+nav{
+    padding:1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+.logo{
+    width:140px;
+}
+nav ul li{
+    display: inline-block;
+    list-style: none;
+    margin: 0.5rem 3rem;
+    position: relative;
+    
+    
+}
+nav ul li a{
+    text-decoration: none;
+    color:#fbf8f8;
+    font-size: 20px; 
+    font: weight 500;
+}
+nav ul li a::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 3px;
+    background: #fff; 
+    transition: width 0.3s ease;
+    position: absolute;
+    bottom: -5px; 
+    left: 0;
+}
+
+nav ul li a:hover::after {
+    width: 100%; 
+}
+
+.content{
+    margin-top: 0%;
+    max-width:830px;
+}
+.content h1{
+    font-size: 70px;
+    color: #eee4e4;
+}
+.content p{
+    margin: 3rem 0 ;
+    font-size: 18px;
+    color:#ffffff;
+    animation-delay: 0.2s;
+    font-family: 'GT Pressura Mono Trial', monospace;
+}
+.animation{
+    opacity:0;
+    transform: translateY(40px);
+    animation: moveup 1s linear forwards;
+}
+@keyframes moveup {
+    100%{
+        opacity: 1;
+        transform: translateY(0px);
+    } 
+}
+.text-container{
+    background-color:rgb(102, 102, 102,0.75);
+    padding: 1rem;
+    margin: 1 rem auto;
+}
+.sections-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; 
+    max-width: 100%;
+}
+
+.skills, .education {
+    flex: 1;
+    padding: 1rem;
+}
+.skills h2, .education h2 {
+    font-size: 24px;
+    margin-bottom: 1rem;
+}
+
+.skills p, .education p {
+    font-size: 18px;
+}
+.contact-info {
+    padding: 1rem;
+    margin-top: 0px;
+}
+
+.contact-info h2 {
+    font-size: 24px;
+    margin-bottom: 1rem;
+}
+
+.contact-info p {
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.contact-info a {
+    text-decoration: none;
+    color: #ffffff; 
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+svg {
+    margin-top: 15%; 
+    margin-left: 5%; 
+    padding: 0;
+    display: block;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:0;
+    height:auto;
+    /*border: 1px solid #e80c0c;*/
+  }
+
+
