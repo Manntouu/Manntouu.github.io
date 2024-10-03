@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite-api@5.6.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-tooltip"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <link rel="stylesheet" href="vegaLite_style.css">
+    <script>
+        
+     const options = {
+        config: {
+          // Vega-Lite default configuration
+        },
+        init: (view) => {
+          // initialize tooltip handler
+          view.tooltip(new vegaTooltip.Handler().call);
+        },
+        view: {
+          // view constructor options
+          // remove the loader if you don't want to default to vega-datasets!
+          loader: vega.loader({
+            baseURL: "https://cdn.jsdelivr.net/npm/vega-datasets@2/",
+          }),
+          renderer: "canvas",
+        },
+      };
+
+      // register vega and vega-lite with the API
+      vl.register(vega, vegaLite, options);
+      </script>
+    <style>
+
+    </style>
+  </head>
+  <body>
+    <div>
+      
+    </div>
+    <div class="container">
+      <!-- visualization goes into this div you can create multiple divs and give them IDs -->
+    <div id="view1_1"></div>
+    <div id="view1_2"></div>
+
+    <div id="view2_1"></div>
+    <div id="view2_2"></div>
+
+    <div id="view3_1"></div>
+    <div id="view3_2"></div>
+    <div id="view3_3"></div>
+    <div id="view3_4"></div>
+
+    <div id="view4_1"></div>
+    <div id="view4_2"></div>
+    <div id="view4_3"></div>
+  </div>
+    <script type="module" src="vegaLite.js"></script>
+  </body>
+</html>
