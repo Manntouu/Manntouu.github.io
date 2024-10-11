@@ -13,7 +13,9 @@ body {
 
 #view1_1, #view1_2,
 #view2_1, #view2_2, 
+#view3,
 #view3_1, #view3_2, #view3_3, #view3_4,
+#view4
 #view4_1, #view4_2, #view4_3 {
     width: 100%;
     height: 100%;

@@ -8,11 +8,12 @@ async function render1_1() {//Global Sales by Genre
   
     // create a bar chart
     const vlSpec = vl
-    .markBar({ color: '#0ef0f0' }) 
+    .markBar() 
       .data(data)
       .encode(
         vl.y().fieldN("Genre").sort("-x"),
-        vl.x().fieldQ("Global_Sales").aggregate("sum")
+        vl.x().fieldQ("Global_Sales").aggregate("sum"), 
+        vl.color().fieldN("Genre")
       )
       .width("container")
       .height(400)
@@ -53,7 +54,7 @@ async function render1_1() {//Global Sales by Genre
   
     // create a bar chart
     const vlSpec = vl
-      .markLine()
+      .markArea()
       .data(data)
       .encode(
         vl.x().fieldT("Year").sort("-x"),
@@ -76,7 +77,7 @@ async function render1_1() {//Global Sales by Genre
   
     // create a bar chart
     const vlSpec = vl
-      .markLine()
+      .markArea()
       .data(data)
       .encode(
         vl.x().fieldT("Year").sort("-x"),
@@ -133,7 +134,33 @@ async function render1_1() {//Global Sales by Genre
 }
   
 */
+async function render3() {
+  const data = await d3.csv("videogames_wide.csv");
+  console.log(data);
+  const vlSpec = vl
+    .markBar()
+    .data(data)
+    .transform(
+      vl.fold(["NA_Sales", "EU_Sales", "JP_Sales", "Other_Sales"]))
+    
+    .encode(
+      vl.x().fieldQ("value").aggregate("sum").axis({ title: "Sales" }),
+      vl.y().fieldN("Platform"), 
+      vl.tooltip().fieldQ("value").aggregate("sum"),
+      vl.color().fieldN("Platform"),
+      vl.facet().fieldN('key').columns(4).title("Sales Across Regions by Platform").sort({"op":"count","field":"Name","order":"descending"})
+    )
+    .width(200)
+    .height(300)
+    .toSpec();
 
+  vegaEmbed("#view3", vlSpec).then((result) => {
+    const view = result.view;
+    view.run();
+  });
+}
+
+/*
 async function render3_1() {
     // Load data
     const data = await d3.csv("videogames_wide.csv");
@@ -225,7 +252,33 @@ async function render3_1() {
     view.run();
     });
   }
+*/
+async function render4() {
+  const data = await d3.csv("videogames_wide.csv");
+  console.log(data);
+  const vlSpec = vl
+    .markBar()
+    .data(data)
+    .transform(
+      vl.fold(["NA_Sales", "EU_Sales", "JP_Sales"]))
+    
+    .encode(
+      vl.x().fieldQ("value").aggregate("sum").axis({ title: "Sales" }),
+      vl.y().fieldN("Genre"), 
+      vl.tooltip().fieldQ("value").aggregate("sum"),
+      vl.color().fieldN("Genre"),
+      vl.facet().fieldN('key').columns(3).title("Sales Across Regions by Genre").sort({"op":"count","field":"Name","order":"descending"})
+    )
+    .width(200)
+    .height(300)
+    .toSpec();
 
+  vegaEmbed("#view4", vlSpec).then((result) => {
+    const view = result.view;
+    view.run();
+  });
+}
+/*
   async function render4_1() {
      // Load data
     const data = await d3.csv("videogames_wide.csv");
@@ -296,7 +349,7 @@ async function render3_1() {
    view.run();
    });
  }
-
+*/
 
 // vis1
  render1_1();
@@ -307,12 +360,14 @@ async function render3_1() {
  render2_2();
 
  //vis3
- render3_1();
- render3_2();
- render3_3();
- render3_4();
+ render3();
+//  render3_1();
+//  render3_2();
+//  render3_3();
+//  render3_4();
 
  //vis4
- render4_1();
- render4_2();
- render4_3();
+ render4();
+ //render4_1();
+ //render4_2();
+ //render4_3();
