@@ -1,0 +1,191 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* General Styles */
+body {
+    font-family: 'Futura', sans-serif;
+    line-height: 1.6;
+    color: #fff;
+    background-color: #000;
+}
+
+/* Vis1 Css */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+ }
+ /* Vis2,3,4,5 Css */
+ .visualization-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem; /* Space between items */
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+   /* Individual Visualization Box */
+  .vis-item {
+    text-align: center;
+  }
+   .vis-box {
+    width: 100%;
+    height: 300px;
+    background-color: #111; /* Dark background for visualizations */
+    border: 1px solid #333; /* Slight border to separate visualizations */
+    border-radius: 5px;
+  }
+  
+  /* Title Styling for Each Visualization */
+  h2 {
+    font-size: 1.2rem;
+    color: #ffffff; /* Bright blue for section titles */
+    margin-bottom: 1rem;
+    text-align: left;
+  }
+ 
+ 
+ 
+ #view1a,#view2 {
+    width: 100%;
+    height: auto;
+    max-width: 1200px;
+ }
+
+/* Navigation */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: #060606;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 50px;
+}
+
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+    
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: black;
+}
+
+.hero h1 {
+    font-size: 8rem;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-family: GT Pressura Mono Trial;
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+.cta-btn {
+    padding: 10px 20px;
+    background: #000000;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.cta-btn:hover {
+    background: #616161;
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Page 1 */
+
+/* Generic Page Style */
+.page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+/* block Section */
+.about {
+    padding: 50px;
+    background: #000;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.about p {
+    font-size: 1.2rem;
+    color: #ccc;
+}
+
+/* bottom Section */
+.services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 50px;
+}
+
+.service-card {
+    padding: 20px;
+    background: #1a1a1a;
+    text-align: center;
+    border: 1px solid #333;
+    max-width: 300px;
+}
+
+.service-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.service-card p {
+    font-size: 1rem;
+    color: #ccc;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #060606;
+    color: white;
+}
+
+
+ 

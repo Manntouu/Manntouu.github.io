@@ -1,0 +1,168 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* General Styles */
+body {
+    font-family: 'Futura', sans-serif;
+    line-height: 1.6;
+    color: #fff; /* White text */
+    background-color: #000; /* Black background */
+}
+/*page style*/
+.page {
+    height: 100vh; /* Each section takes up the full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    font-size: 2rem;
+    padding: 20px;
+}
+/* Navigation */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: #060606; /* Black navbar */
+    color: #000000; /* text colour in navbar */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 60px;
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    background: url('hero-bg.jpg') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+}
+
+.hero h1 {
+    font-size: 10rem;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-family: GT Pressura Mono Trial;
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+.cta-btn {
+    padding: 10px 20px;
+    background: #ff5c5c;
+    color: #fff;
+    border: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.cta-btn:hover {
+    background: #ff4040;
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+}
+
+/* About Section */
+.about {
+    padding: 50px;
+    background: #000; /* Black background */
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #fff; /* White text */
+}
+
+.about p {
+    font-size: 1.2rem;
+    color: #ccc; /* Slightly gray text for contrast */
+}
+
+/* Services Section */
+.services {
+    padding: 50px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    background: #000; /* Black background */
+}
+
+.service-card {
+    padding: 20px;
+    background: #1a1a1a; /* Slightly lighter black for cards */
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* Subtle white shadow */
+    text-align: center;
+    border: 1px solid #333; /* Border for card separation */
+}
+
+.service-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #fff; /* White text */
+}
+
+.service-card p {
+    font-size: 1rem;
+    color: #ccc; /* Slightly gray text */
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #000; /* Black background */
+    color: #fff; /* White text */
+    border-top: 1px solid #333;
+}
+
+
+/*animation */
+
+.cta-btn:hover {
+    background: #ff4040;
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.hero h1, .hero p {
+    animation: fadeIn 2s ease-in-out;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
