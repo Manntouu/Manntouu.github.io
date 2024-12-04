@@ -276,10 +276,157 @@ async function render4Visualizations() {
     vegaEmbed("#vis3", reviewScoreSpec);
     vegaEmbed("#vis4", gamePublishedSpec);
    }
+
+   async function render2PriceBin() {
+    // Chart 1: Price Bin vs Number of Games Published
+    const priceBinGameCountSpec = vl
+      .markBar()
+      .data(data)
+      .encode(
+        vl.y().fieldQ('price').bin({ step: 10 }).title('Price Bin ($)'), // Bin prices
+        vl.x().fieldQ('count').aggregate('count').axis({ tickCount: 7, tickStep: 20 }).title('Number of Games Published'), // Count games
+        vl.color().value('#bdbeba') // Set color
+      )
+      .width(400)
+      .height(300)
+      .toSpec();
+     // Embed Chart 1
+    vegaEmbed('#priceBinChart1', priceBinGameCountSpec);
+     // Chart 2: Price Bin vs Average Copies Sold
+    const priceBinCopiesSoldSpec = vl
+      .markBar()
+      .data(data)
+      .encode(
+        vl.y().fieldQ('price').bin({ step: 10 }).title('Price Bin ($)'), // Bin prices
+        vl.x().fieldQ('copiesSold').aggregate('sum').title('Sum Copies Sold'), // Total copies sold
+        vl.color().value('#5d6169') // Set color
+      )
+      .width(400)
+      .height(300)
+      .toSpec();
+     // Embed Chart 2
+    vegaEmbed('#priceBinChart2', priceBinCopiesSoldSpec);
+  }
+   ////////vis 8/////////////////////////
+  async function renderBlockVisualization() {
+    const publisherColors = {
+        Indie: "#03396c",
+        AA: "#00c2c7",   
+        AAA: "#77ab59"   
+      };
+    // Step 1: Process top 100 games by review score
+    const top100Games = data
+      .sort((a, b) => d3.descending(+a.reviewScore, +b.reviewScore))
+      .slice(0, 100);
+ 
+ 
+      console.log("Top 100 Games:", top100Games);
+    // Step 2: Aggregate by publisher class
+    const aggregatedData = d3.groups(top100Games, d => d.publisherClass)
+      .map(([publisherClass, values]) => ({
+        publisherClass,
+        avgReviewScore: d3.mean(values, d => +d.reviewScore),
+        count: values.length
+      }));
+  
+    // Dimensions
+    const margin = { top: 20, right: 150, bottom: 40, left: 40 };
+    const width = 800;
+    const height = 400;
+    const blockSize = 30; // Size of each block
+    const blockSpacing = 0; // Space between blocks (reduce this value)
+    const totalColumns = 10; // Total columns in the rectangle
+     // Compute the total number of blocks
+    const totalBlocks = aggregatedData.reduce((sum, d) => sum + d.count, 0);
+    const totalRows = Math.ceil(totalBlocks / totalColumns);
+     // xScale: Maps column indices to x positions
+    const xScale = d3.scaleLinear()
+      .domain([0, totalColumns])
+      .range([margin.left, width - margin.right- 230]);
+     // yScale: Maps row indices to y positions
+    const yScale = d3.scaleLinear()
+      .domain([0, totalRows])
+      .range([margin.top, height - margin.bottom]);
+     // SVG Container
+    const svg = d3.select("#blockVisualization")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .style("background-color", "#000")
+      .style("margin", "0") // Ensure no margin
+    .style("padding", "0");
+     svg.selectAll("rect")
+    .data(top100Games)
+    .join("rect")
+    .attr("x", (d, i) => xScale(i % totalColumns))
+    .attr("y", (d, i) => yScale(Math.floor(i / totalColumns)))
+    .attr("width", blockSize)
+    .attr("height", blockSize)
+    .attr("fill", (d) => publisherColors[d.publisherClass] || "#fff")
+    .attr("stroke", "#000")
+    .attr("stroke-width", 0.5)
+    .on("mouseover", (event, d) => {
+        // Show the info section and update its content
+        const infoSection = document.querySelector("#info-section");
+        infoSection.classList.add("visible");
+   
+        // Update text content
+        document.querySelector(".game-name").textContent = d.name || "N/A";
+        document.querySelector(".game-review-score").textContent = d.reviewScore || "N/A";
+        document.querySelector(".game-release-date").textContent = d.releaseDate || "N/A";
+        document.querySelector(".game-price").textContent = `$${d.price || "0.00"}`;
+        document.querySelector(".game-copies-sold").textContent = d.copiesSold || "N/A";
+        document.querySelector(".game-playtime").textContent = `${parseFloat(d.avgPlaytime || 0).toFixed(1)} hours`;
+        document.querySelector(".game-publisher").textContent = d.publishers || "N/A";
+   
+        // Update the game icon
+        const gameIcon = document.querySelector(".game-icon");
+        gameIcon.src = `dataset/gameIcon/${d.steamId}.jpg`;
+        gameIcon.alt = d.name || "Game Icon";
+   
+        // Handle missing images gracefully
+        gameIcon.onerror = () => {
+          gameIcon.src = "dataset/gameIcon/default.jpg";
+        };
+      })
+    .on("mouseout", () => {
+        document.querySelector("#info-section").classList.remove("visible");
+      });
+     
+ svg.selectAll(".publisher-label")
+    .data(aggregatedData)
+    .join("text")
+    .attr("x", width - margin.right - 200) // Place labels to the right of the blocks
+    .attr("y", (d, i) => margin.top + 250 + i * 40) // Distribute labels vertically
+    .attr("text-anchor", "start")
+    .attr("fill", (d) => { return publisherColors[d.publisherClass] || "#fff"; // Default to white
+    })
+    .text(d => `${d.publisherClass}: ${d.count} games`);
+ 
+ 
+  // Add Tooltip Div
+  d3.select("body").append("div")
+    .attr("id", "tooltip")
+    .style("position", "absolute")
+    .style("background-color", "#fff")
+    .style("color", "#000")
+    .style("padding", "10px")
+    .style("border", "1px solid #ccc")
+    .style("border-radius", "5px")
+    .style("opacity", 0);
+ 
+ 
+  console.log("Rendered Blocks for Top 100 Games");
+ }
+ 
+ 
   
    
    renderFirstVis1();
    render4Visualizations();
+
+   render2PriceBin();
+ renderBlockVisualization();
 
    
    

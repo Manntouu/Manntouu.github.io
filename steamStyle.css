@@ -64,7 +64,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
+    padding: 5px 40px;
     background: #060606;
     position: sticky;
     top: 0;
@@ -151,6 +151,84 @@ body {
     font-size: 1.2rem;
     color: #ccc;
 }
+
+/*Vis 6, 7 Css*/
+.twinChart {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin: 2rem;
+  }
+   .twinChart-item {
+    width: 45%;
+    text-align: center;
+  }
+  /*vis8*/
+ .content-container {
+    display: flex; /* Align children horizontally */
+    position: relative;
+    justify-content: flex-start; /* Space between the two children */
+    align-items: flex-start; /* Align top edges */
+    text-align: left;
+    margin: 0 auto;
+    width: 100%;
+  }
+   /* Block Visualization */
+  #blockVisualization {
+    margin: 0;
+    width: 70%;
+  }
+   /* Info Section */
+  #info-section {
+    position: absolute; /* Fixes position to the grid */
+    left: 450px; /* Adjust spacing from the right */
+    top: 5%; /* Adjust based on where you want the info section */
+    max-width: 80%; /* Restrict the width */
+    flex: 1;
+    visibility: hidden; /* Keep space but hide content initially */
+    opacity: 0; /* Smooth transition for visibility */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start; /* Align content to the left */
+    gap: 10px;
+    border-radius: 5px;
+    width: 800px;
+    transition: visibility 0s, opacity 0.5s ease-in-out;
+  }
+  #info-section.visible {
+    visibility: visible; /* Make it visible */
+    opacity: 1;
+    }
+  /* Info Section Game Name */
+  #info-section .game-name {
+    font-size: 20px;
+    color: white;
+    margin-bottom: 10px;
+  }
+   /* Info Section Details */
+  #info-section .game-details {
+    flex: 2;
+    color: white;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+   /* Game Icon Placement */
+ .game-icon-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 10px;
+  }
+   .game-icon {
+    width: 400px;
+    height: auto;
+    border: 1px solid #333;
+    border-radius: 5px;
+    margin-left: 10px; /* Space between icon and details */
+  }
+ 
 
 /* bottom Section */
 .services {

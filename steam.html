@@ -11,25 +11,33 @@
    <script src="https://cdn.jsdelivr.net/npm/vega-lite-api@5.6.0"></script>
    <script src="https://cdn.jsdelivr.net/npm/vega-tooltip"></script>
    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="steamStyle.css">
 </head>
 <body>
     <!-- JavaScript -->
     <script type="module" src="steam.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Navigation -->
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <a >Steam Report</a>
-            </div>
-            <ul class="nav-links">
-                
-                <li><a href="index.html">Home</a></li>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Steam Report</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
             </ul>
-           
-        </nav>
-    </header>
+        </div>
+    </div>
+</nav>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -42,35 +50,23 @@
 
     <!-- Page 1 -->
     <section class="page" id="page-1" style="position: relative; height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 5%; background-color: black; color: white;">
-        
-        <!-- Content Grid -->
         <div style="display: grid; grid-template-columns: 4fr 1fr; gap: 20px;">
-            
-            <!-- Left Content -->
             <div>
-                <p style="font-size: 4rem; text-decoration: underline;  text-align: left; margin-bottom: 20px;">34M</p>
-                <p style="font-size: 6rem; text-decoration: underline;  text-align: left; margin-bottom: 20px; position: relative; top: 10px;">67M</p>
-                <p style="font-size: 8rem; text-decoration: underline;  text-align: left;position: relative;">110M</p>
+                <p style="font-size: 4rem; text-decoration: underline; text-align: left; margin-bottom: 20px;">34M</p>
+                <p style="font-size: 6rem; text-decoration: underline; text-align: left; margin-bottom: 20px; position: relative; top: 10px;">67M</p>
+                <p style="font-size: 8rem; text-decoration: underline; text-align: left; position: relative;">110M</p>
             </div>
-    
-            <!-- Right Content -->
             <div style="position: relative; top: -5%;">
-                <p style="font-size: 6rem; text-align: right; ;margin-bottom: 20px;">AAA</p>
-                <p style="font-size: 6rem; text-align: center; ; position: relative; left: -40px; margin-top: -10px;">AA</p>
-                <p style="font-size: 6rem; text-align: left; ; margin-top: 40px;">Indie</p>
+                <p style="font-size: 6rem; text-align: right; margin-bottom: 20px;">AAA</p>
+                <p style="font-size: 6rem; text-align: center; position: relative; left: -40px; margin-top: -10px;">AA</p>
+                <p style="font-size: 6rem; text-align: left; margin-top: 40px;">Indie</p>
             </div>
         </div>
-    
-        <!-- Description -->
         <div style="position: relative; bottom: 10%; right: 17%; max-width: 3000px; text-align: right;">
-            <p style="font-size: 0.9rem; line-height: 1.5; color: #ccc; position: relative; top: 10px; right: 0;">
-                copies of games sold*
-            </p>
+            <p style="font-size: 0.9rem; line-height: 1.5; color: #ccc; position: relative; top: 10px; right: 0;">copies of games sold*</p>
         </div>
         <div style="position: relative; top:-110%; left: -42%; max-width: 300px; text-align: left;">
-            <p style="font-size: 0.9rem; line-height: 1.5; color: #ccc; position: relative; top: 10px; right: 0;">
-                Cumulatively, all games on Steam have sold over <b>211</b> million copies in the year of 2024. The games are divided into three categories: AAA, AA, and Indie. 
-            </p>
+            <p style="font-size: 0.9rem; line-height: 1.5; color: #ccc; position: relative; top: 10px; right: 0;">Cumulatively, all games on Steam have sold over <b>211</b> million copies in 2024. The games are divided into three categories: AAA, AA, and Indie.</p>
         </div>
     </section>
     
@@ -90,19 +86,19 @@
             <div style="position: relative; top: -60%; left:-29%; display: flex; justify-content: space-between; align-items: center;">
                 <!-- Group 1: Number + Title for AAA -->
                 <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0 20px;">
-                    <p style="font-family: GT Pressura Mono Trial;font-size: 2rem;  margin-bottom: 10px;">1,586,597,652</p>
+                    <p style="font-family: GT Pressura Mono Trial;font-size: 2rem;  margin-bottom: 10px;">$1,586,597,652</p>
                     <p style="font-size: 2rem;">AAA</p>
                 </div>
             
                 <!-- Group 2: Number + Title for AA -->
                 <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0 20px;">
-                    <p style="font-family: GT Pressura Mono Trial; font-size: 2rem;  margin-bottom: 10px;">1,484,897,797</p>
+                    <p style="font-family: GT Pressura Mono Trial; font-size: 2rem;  margin-bottom: 10px;">$1,484,897,797</p>
                     <p style="font-size: 2rem;">AA</p>
                 </div>
             
                 <!-- Group 3: Number + Title for Indie -->
                 <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0 20px;">
-                    <p style="font-family: GT Pressura Mono Trial; font-size: 2rem;  margin-bottom: 10px;">877,077,525</p>
+                    <p style="font-family: GT Pressura Mono Trial; font-size: 2rem;  margin-bottom: 10px;">$877,077,525</p>
                     <p style="font-size: 2rem;">Indie</p>
                 </div>
                 
@@ -190,28 +186,73 @@
 
     <!-- Page 5 -->
     <section class="page" id="page-4">
-        <h1>Page 5:OLorem ipsum dolor</h1>
-        <p>Get in touch with us here.</p>
+        <h1></h1>
+        <p>Which price bin is most popular among publishers, and which attracts the most buyers?</p>
+        <div class="twinChart">
+            <div class="twinChart-item">
+              <h2>Number of Games <strong>Published</strong> for each price bin</h2>
+              <div id="priceBinChart1"></div>
+            </div>
+            <div class="twinChart-item">
+              <h2>Number of Games <strong>Sold</strong> for each price bin</h2>
+              <div id="priceBinChart2"></div>
+            </div>
+        </div>
     </section>
+ 
+ 
+    <!-- Page 6 -->
+    <section class="page" id="page-4" >
+        <h1>TOP 100 RATED GAMES FOR 2024</h1>
+        <p>from highest to lowest</p>
+        <!-- Visualization Block -->
+        <div class="content-container">
+            <div id="blockVisualization"></div>
+ 
+ 
+            <!-- Info Section -->
+            <div id="info-section" class="fixed-info">
+            <div class="game-details">
+                <!-- Game Name -->
+                <h2 class="game-name">Game Name</h2>
+                <p><strong>Review Score:</strong> <span class="game-review-score"></span></p>
+                <p><strong>Release Date:</strong> <span class="game-release-date"></span></p>
+                <p><strong>Price:</strong> <span class="game-price"></span></p>
+                <p><strong>Copies Sold:</strong> <span class="game-copies-sold"></span></p>
+                <p><strong>Avg Playtime:</strong> <span class="game-playtime"></span></p>
+                <p><strong>Publisher:</strong> <span class="game-publisher"></span></p>
+            </div>
+            <div class="game-icon-container">
+                <img class="game-icon" src="finalProjData/gameIcon/default.jpg" alt="Game Icon">
+            </div>
+        </div>
+        </div>
+    </section>
+ 
 
     <!-- Page 6 -->
+    <!-- 
     <section class="page" id="page-4">
         <h1>Page 6: OLorem ipsum dolor</h1>
         <p>Get in touch with us here.</p>
     </section>
+    -->
 
     
     
     
 </div>
-
+    
     <!-- About Section -->
+    <!--
     <section id="about" class="about">
         <h3>Recap</h3>
         <p>Recap steam sells, copies, time played</p>
     </section>
+    -->
 
     <!-- Services Section -->
+    <!--
     <section id="services" class="services">
         <h2>OLorem ipsum dolor</h2>
         <div class="service-card">
@@ -223,10 +264,12 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
     </section>
+    -->
+    
 
     <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Steam Report.</p>
+    <footer class="bg-dark text-center text-white py-3">
+        <p>&copy; 2024 Steam Report</p>
     </footer>
 </body>
 </html>
