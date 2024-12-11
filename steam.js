@@ -101,7 +101,7 @@ async function render4Visualizations() {
       }));
    
    
-    // Avg Playtime Visualization
+    /////////1 Avg Playtime Visualization/////////////
     const baseChartPlaytime = vl
       .markBar({ color: '#C0C0C0' })
       .data(aggregateData)
@@ -109,13 +109,13 @@ async function render4Visualizations() {
         vl.x().fieldN('publisherClass')
         .sort(['AAA', 'AA', 'Indie'])
         .scale({ paddingInner: 0.5, paddingOuter: 0.2 })
-        .axis({ labelAngle: 0 }),
-        vl.y().fieldQ('avgPlaytime')
+        .axis({ labelAngle: 0 , grid: false}),
+        vl.y().fieldQ('avgPlaytime').axis({grid: false}).title('Average Playtime (hours)')
       );
    
    
     const avgBarsPlaytime = vl
-      .markBar({ color: '#e45755' })
+      .markBar({ color: '#5d6169' })
       .data(aggregateData)
       .transform(
         vl.filter("datum.avgPlaytime >= 13.44"),
@@ -125,25 +125,61 @@ async function render4Visualizations() {
         vl.x().fieldN('publisherClass')
         .sort(['AAA', 'AA', 'Indie'])
         .scale({ paddingInner: 0.5, paddingOuter: 0.2 })
-        .axis({ labelAngle: 0 }),
-        vl.y().fieldQ('baseline'),
+        .axis({ labelAngle: 0 ,grid: false}),
+        vl.y().fieldQ('baseline').axis({grid: false}),
         vl.y2().fieldQ('avgPlaytime')
       );
    
    
       const avgLinePlaytime = vl
-      .markRule({ color: 'black', strokeWidth: 1 })
-      .data([{ y: 13.44 }])
-      .encode(vl.y().datum(13.44).title('Avg Threshold'));
-   
-   
+        .markRule({ color: 'black', strokeWidth: 1, strokeDash: [4, 4] }) // Dashed line with 4px dash and 4px gap
+        .data([{ y: 13.44 }])
+        .encode(vl.y().datum(13.44).title('Avg Threshold'));
+
+   const annotationPlaytimeText = vl
+      .markText({
+        align: "left", // Align the text to the left
+        baseline: "middle", // Vertically align the text
+        dx: 30, // Offset to the right
+        dy: 8, // Offset above the graph
+        fontSize: 11, // Font size for readability
+        fontWeight: "bold", // Bold for emphasis
+        color: "#000" // Black text color
+      })
+      .data([{ publisherClass: "AAA", avgPlaytime: 15 }]) // Position the annotation near AAA
+      .encode(
+        vl.x().datum("Indie"), // Place annotation near the AAA category
+        vl.y().datum(15), // Place annotation near the 15 y-value
+        vl.text().value("AVG.")
+      );
+
+    const textLabels = vl
+      .markText({
+        align: 'center', // Align text in the center of each bar
+        baseline: 'middle', // Align text vertically to the middle of the bar
+        dy: -7, // Adjust the vertical position to appear above the bar
+        fontSize: 12, // Set the font size
+        fontWeight: 'bold', // Optional: Make text bold
+        color: 'black', // Text color
+      })
+      .data(aggregateData)
+      .encode(
+        vl.x()
+          .fieldN('publisherClass')
+          .sort(['AAA', 'AA', 'Indie'])
+          .scale({ paddingInner: 0.5, paddingOuter: 0.2 }),
+        vl.y().fieldQ('avgPlaytime'),
+        vl.text().fieldQ('avgPlaytime').format('d') // Format to two decimal places
+      );   
+
+      //Display 1st visualization end//
       const playtimeSpec = vl
-      .layer(baseChartPlaytime, avgBarsPlaytime, avgLinePlaytime)
+      .layer(baseChartPlaytime, avgBarsPlaytime, avgLinePlaytime, annotationPlaytimeText, textLabels)
       .width(400)
       .toSpec();
    
    
-    // Avg Price Visualization
+    //////////2 Avg Price Visualization///////////
     const baseChartPrice = vl
       .markBar({ color: '#C0C0C0' })
       .data(aggregateData)
@@ -151,13 +187,13 @@ async function render4Visualizations() {
         vl.x().fieldN('publisherClass')
         .sort(['AAA', 'AA', 'Indie'])
         .scale({ paddingInner: 0.5, paddingOuter: 0.2 })
-        .axis({ labelAngle: 0 }),
-        vl.y().fieldQ('avgPrice')
+        .axis({ labelAngle: 0, grid: false }),
+        vl.y().fieldQ('avgPrice').axis({grid: false}).title('Average Price ($)')
       );
    
    
     const avgBarsPrice = vl
-      .markBar({ color: '#e45755' })
+      .markBar({ color: '#5d6169' })
       .data(aggregateData)
       .transform(
         vl.filter("datum.avgPrice >= 17.52"),
@@ -167,25 +203,63 @@ async function render4Visualizations() {
         vl.x().fieldN('publisherClass')
         .sort(['AAA', 'AA', 'Indie'])
         .scale({ paddingInner: 0.5, paddingOuter: 0.2 })
-        .axis({ labelAngle: 0 }),
-        vl.y().fieldQ('baseline'),
+        .axis({ labelAngle: 0, grid: false }),
+        vl.y().fieldQ('baseline').axis({grid: false}),
         vl.y2().fieldQ('avgPrice')
       );
    
    
       const avgLinePrice = vl
-      .markRule({ color: 'black', strokeWidth: 1 })
+      .markRule({ color: 'black', strokeWidth: 1 ,strokeDash: [4, 4]})
       .data([{ y: 17.52 }])
       .encode(vl.y().datum(17.52).title('Avg Threshold'));
    
-   
+   //Add text labels
+      const annotationPriceText = vl
+      .markText({
+        align: "left", // Align the text to the left
+        baseline: "middle", // Vertically align the text
+        dx: 30, // Offset to the right
+        dy: 8, // Offset above the graph
+        fontSize: 11, // Font size for readability
+        fontWeight: "bold", // Bold for emphasis
+        color: "#000" // Black text color
+      })
+      .data([{ publisherClass: "AAA", avgPlaytime: 15 }]) // Position the annotation near AAA
+      .encode(
+        vl.x().datum("Indie"),
+        vl.y().datum(20),
+        vl.text().value("AVG.")
+      );
+
+
+    const textLabels_price = vl
+      .markText({
+        align: 'center', // Align text in the center of each bar
+        baseline: 'middle', // Align text vertically to the middle of the bar
+        dy: -5, // Adjust the vertical position to appear above the bar
+        fontSize: 12, // Set the font size
+        fontWeight: 'bold', // Optional: Make text bold
+        color: 'black', // Text color
+      })
+      .data(aggregateData)
+      .encode(
+        vl.x()
+          .fieldN('publisherClass')
+          .sort(['AAA', 'AA', 'Indie'])
+          .scale({ paddingInner: 0.5, paddingOuter: 0.2 }),
+        vl.y().fieldQ('avgPrice'),
+        vl.text().fieldQ('avgPrice').format('d') // Format to two decimal places
+      );
+
+      //Display 2nd visualization end//
       const priceSpec = vl
-      .layer(baseChartPrice, avgBarsPrice, avgLinePrice)
+      .layer(baseChartPrice, avgBarsPrice, avgLinePrice, annotationPriceText, textLabels_price)
       .width(400)
       .toSpec();
    
    
-    // Avg Review Score Visualization
+    ////////////3 Avg Review Score Visualization/////////////////
     const baseChartReview = vl
       .markBar({ color: '#C0C0C0' })
       .data(aggregateData)
@@ -193,41 +267,36 @@ async function render4Visualizations() {
         vl.x().fieldN('publisherClass')
         .sort(['AAA', 'AA', 'Indie'])
         .scale({ paddingInner: 0.5, paddingOuter: 0.2 })
-        .axis({ labelAngle: 0 }),
-        vl.y().fieldQ('avgReviewScore')
+        .axis({ labelAngle: 0, grid: false }),
+        vl.y().fieldQ('avgReviewScore').axis({grid: false})
       );
-   
-   
-    const avgBarsReview = vl
-      .markBar({ color: '#e45755' })
-      .data(aggregateData)
-      .transform(
-        vl.filter("datum.avgReviewScore >= 76.2"),
-        vl.calculate("76.2").as("baseline")
-      )
-      .encode(
-        vl.x().fieldN('publisherClass')
-        .sort(['AAA', 'AA', 'Indie'])
-        .scale({ paddingInner: 0.5, paddingOuter: 0.2 })
-        .axis({ labelAngle: 0 }),
-        vl.y().fieldQ('baseline'),
-        vl.y2().fieldQ('avgReviewScore')
-      );
-   
-   
-      const avgLineReview = vl
-      .markRule({ color: 'black', strokeWidth: 1 })
-      .data([{ y: 76.2}])
-      .encode(vl.y().datum(76.2).title('Avg Threshold'));
-   
-   
+
+      const textLabels_reviewScore = vl
+        .markText({
+          align: 'center', // Align text in the center of each bar
+          baseline: 'middle', // Align text vertically to the middle of the bar
+          dy: -5, // Adjust the vertical position to appear above the bar
+          fontSize: 12, // Set the font size
+          fontWeight: 'bold', // Optional: Make text bold
+          color: 'black', // Text color
+        })
+        .data(aggregateData)
+        .encode(
+          vl.x()
+            .fieldN('publisherClass')
+            .sort(['AAA', 'AA', 'Indie'])
+            .scale({ paddingInner: 0.5, paddingOuter: 0.2 }),
+          vl.y().fieldQ('avgReviewScore'),
+          vl.text().fieldQ('avgReviewScore').format('d')
+        );
+
       const reviewScoreSpec = vl
-      .layer(baseChartReview, avgBarsReview, avgLineReview)
+      .layer(baseChartReview, textLabels_reviewScore)
       .width(400)
       .toSpec();
    
    
-    // Game released by publisher class
+    /////////4 Pie chart: Game released by publisher class////////////
     // Step 1: Aggregate data to count games by publisherClass
     const countData = d3.groups(data, d => d.publisherClass)
       .map(([publisherClass, values]) => ({
@@ -271,153 +340,257 @@ async function render4Visualizations() {
    
    
     // Embed visualizations in respective divs
-    vegaEmbed("#vis1", playtimeSpec);
-    vegaEmbed("#vis2", priceSpec);
-    vegaEmbed("#vis3", reviewScoreSpec);
-    vegaEmbed("#vis4", gamePublishedSpec);
-   }
+    
+   vegaEmbed("#vis1", playtimeSpec, { actions: false });
+   vegaEmbed("#vis2", priceSpec, { actions: false });
+   vegaEmbed("#vis3", reviewScoreSpec, { actions: false });
+   vegaEmbed("#vis4", gamePublishedSpec, { actions: false });
+  }
+
 
    async function render2PriceBin() {
     // Chart 1: Price Bin vs Number of Games Published
     const priceBinGameCountSpec = vl
-      .markBar()
-      .data(data)
-      .encode(
-        vl.y().fieldQ('price').bin({ step: 10 }).title('Price Bin ($)'), // Bin prices
-        vl.x().fieldQ('count').aggregate('count').axis({ tickCount: 7, tickStep: 20 }).title('Number of Games Published'), // Count games
-        vl.color().value('#bdbeba') // Set color
+      .layer(
+        // Bar chart
+        vl.markBar()
+          .data(data)
+          .encode(
+            vl.y().fieldQ('price').bin({ step: 10 }).title('Price Bin ($)'), // Bin prices
+            vl.x().fieldQ('count').aggregate('count').axis({ tickCount: 7, tickStep: 20, grid: false }).title('Number of Games Published'), // Count games
+            vl.color().value('#bdbeba') // Set color
+          ),
+        // Text labels
+        vl.markText({
+          align: 'left',
+          baseline: 'middle',
+          dx: 3, // Center the text on the bar
+          dy: 0, // Position above the bar
+          fontSize: 12,
+          fontWeight: 'bold',
+          color: 'black',
+        })
+          .data(data)
+          .encode(
+            vl.y().fieldQ('price').bin({ step: 10 }),
+            vl.x().fieldQ('count').aggregate('count'),
+            vl.text().fieldQ('count').aggregate('count').format('d') // Format as integers
+          )
       )
       .width(400)
       .height(300)
       .toSpec();
+
+
      // Embed Chart 1
-    vegaEmbed('#priceBinChart1', priceBinGameCountSpec);
-     // Chart 2: Price Bin vs Average Copies Sold
-    const priceBinCopiesSoldSpec = vl
-      .markBar()
-      .data(data)
-      .encode(
-        vl.y().fieldQ('price').bin({ step: 10 }).title('Price Bin ($)'), // Bin prices
-        vl.x().fieldQ('copiesSold').aggregate('sum').title('Sum Copies Sold'), // Total copies sold
-        vl.color().value('#5d6169') // Set color
-      )
-      .width(400)
-      .height(300)
-      .toSpec();
-     // Embed Chart 2
-    vegaEmbed('#priceBinChart2', priceBinCopiesSoldSpec);
+    vegaEmbed('#priceBinChart1', priceBinGameCountSpec, { actions: false });
   }
+
    ////////vis 8/////////////////////////
-  async function renderBlockVisualization() {
-    const publisherColors = {
-        Indie: "#03396c",
-        AA: "#00c2c7",   
-        AAA: "#77ab59"   
-      };
-    // Step 1: Process top 100 games by review score
-    const top100Games = data
-      .sort((a, b) => d3.descending(+a.reviewScore, +b.reviewScore))
-      .slice(0, 100);
- 
- 
-      console.log("Top 100 Games:", top100Games);
-    // Step 2: Aggregate by publisher class
-    const aggregatedData = d3.groups(top100Games, d => d.publisherClass)
-      .map(([publisherClass, values]) => ({
-        publisherClass,
-        avgReviewScore: d3.mean(values, d => +d.reviewScore),
-        count: values.length
-      }));
+   let tooltipTimeout;
+   async function renderBlockVisualization() {
+     const publisherColors = {
+         Indie: "#FFFACD",
+         AA: "#AFEEEE",   
+         AAA: "#808080"   
+       };
+     // Step 1: Process top 100 games by review score
+     const top100Games = data
+       .sort((a, b) => d3.descending(+a.reviewScore, +b.reviewScore))
+       .slice(0, 100);
   
-    // Dimensions
-    const margin = { top: 20, right: 150, bottom: 40, left: 40 };
-    const width = 800;
-    const height = 400;
-    const blockSize = 30; // Size of each block
-    const blockSpacing = 0; // Space between blocks (reduce this value)
-    const totalColumns = 10; // Total columns in the rectangle
-     // Compute the total number of blocks
-    const totalBlocks = aggregatedData.reduce((sum, d) => sum + d.count, 0);
-    const totalRows = Math.ceil(totalBlocks / totalColumns);
-     // xScale: Maps column indices to x positions
-    const xScale = d3.scaleLinear()
-      .domain([0, totalColumns])
-      .range([margin.left, width - margin.right- 230]);
-     // yScale: Maps row indices to y positions
-    const yScale = d3.scaleLinear()
-      .domain([0, totalRows])
-      .range([margin.top, height - margin.bottom]);
-     // SVG Container
-    const svg = d3.select("#blockVisualization")
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .style("background-color", "#000")
-      .style("margin", "0") // Ensure no margin
-    .style("padding", "0");
-     svg.selectAll("rect")
-    .data(top100Games)
-    .join("rect")
-    .attr("x", (d, i) => xScale(i % totalColumns))
-    .attr("y", (d, i) => yScale(Math.floor(i / totalColumns)))
-    .attr("width", blockSize)
-    .attr("height", blockSize)
-    .attr("fill", (d) => publisherColors[d.publisherClass] || "#fff")
-    .attr("stroke", "#000")
-    .attr("stroke-width", 0.5)
-    .on("mouseover", (event, d) => {
-        // Show the info section and update its content
-        const infoSection = document.querySelector("#info-section");
-        infoSection.classList.add("visible");
+  
+       console.log("Top 100 Games:", top100Games);
+     // Step 2: Aggregate by publisher class
+     const aggregatedData = d3.groups(top100Games, d => d.publisherClass)
+       .map(([publisherClass, values]) => ({
+         publisherClass,
+         avgReviewScore: d3.mean(values, d => +d.reviewScore),
+         count: values.length
+       }));
    
-        // Update text content
-        document.querySelector(".game-name").textContent = d.name || "N/A";
-        document.querySelector(".game-review-score").textContent = d.reviewScore || "N/A";
-        document.querySelector(".game-release-date").textContent = d.releaseDate || "N/A";
-        document.querySelector(".game-price").textContent = `$${d.price || "0.00"}`;
-        document.querySelector(".game-copies-sold").textContent = d.copiesSold || "N/A";
-        document.querySelector(".game-playtime").textContent = `${parseFloat(d.avgPlaytime || 0).toFixed(1)} hours`;
-        document.querySelector(".game-publisher").textContent = d.publishers || "N/A";
-   
-        // Update the game icon
-        const gameIcon = document.querySelector(".game-icon");
-        gameIcon.src = `dataset/gameIcon/${d.steamId}.jpg`;
-        gameIcon.alt = d.name || "Game Icon";
-   
-        // Handle missing images gracefully
-        gameIcon.onerror = () => {
-          gameIcon.src = "dataset/gameIcon/default.jpg";
-        };
-      })
-    .on("mouseout", () => {
-        document.querySelector("#info-section").classList.remove("visible");
-      });
-     
- svg.selectAll(".publisher-label")
-    .data(aggregatedData)
-    .join("text")
-    .attr("x", width - margin.right - 200) // Place labels to the right of the blocks
-    .attr("y", (d, i) => margin.top + 250 + i * 40) // Distribute labels vertically
-    .attr("text-anchor", "start")
-    .attr("fill", (d) => { return publisherColors[d.publisherClass] || "#fff"; // Default to white
+     // Dimensions
+     const margin = { top: 20, right: 150, bottom: 40, left: 40 };
+     const width = 800;
+     const height = 400;
+     const blockSize = 30; // Size of each block
+     const blockSpacing = 0; // Space between blocks (reduce this value)
+     const totalColumns = 10; // Total columns in the rectangle
+      // Compute the total number of blocks
+     const totalBlocks = aggregatedData.reduce((sum, d) => sum + d.count, 0);
+     const totalRows = Math.ceil(totalBlocks / totalColumns);
+      // xScale: Maps column indices to x positions
+     const xScale = d3.scaleLinear()
+       .domain([0, totalColumns])
+       .range([margin.left, width - margin.right- 230]);
+      // yScale: Maps row indices to y positions
+     const yScale = d3.scaleLinear()
+       .domain([0, totalRows])
+       .range([margin.top, height - margin.bottom]);
+      // SVG Container
+     const svg = d3.select("#blockVisualization")
+       .append("svg")
+       .attr("width", width)
+       .attr("height", height)
+       .style("background-color", "#000")
+       .style("margin", "0") // Ensure no margin
+        .style("padding", "0");
+
+      
+      svg.selectAll("rect")
+     .data(top100Games)
+     .join("rect")
+     .attr("x", (d, i) => xScale(i % totalColumns))
+     .attr("y", (d, i) => yScale(Math.floor(i / totalColumns)))
+     .attr("width", blockSize)
+     .attr("height", blockSize)
+     .attr("fill", (d) => publisherColors[d.publisherClass] || "#fff")
+     .attr("stroke", "#000")
+     .attr("stroke-width", 0.5)
+     .each(function () {
+        const rect = d3.select(this);
+        if (!rect.attr("data-original-x")) {
+            rect.attr("data-original-x", rect.attr("x"))
+                .attr("data-original-y", rect.attr("y"));
+        }
     })
-    .text(d => `${d.publisherClass}: ${d.count} games`);
+     .on("mouseover", function(event, d){
+         clearTimeout(tooltipTimeout); // Clear any previous timeouts
+         const isSmallScreen = window.innerWidth <= 768;
+         const tooltip = document.querySelector("#tooltip");
+         const infoSection = document.querySelector("#info-section");
+         // Store the original attributes in the dataset of the element
+         const rect = d3.select(this);
+
+         // Make the block white and bigger
+         rect.interrupt();
+         rect.transition()
+             .duration(150)
+             .attr("fill", "#DC143C")
+             .attr("width", +blockSize + 8) // Slightly bigger
+             .attr("height", +blockSize + 8)
+             .attr("x", +rect.attr("data-original-x") - 4) // Adjust position to keep centered
+             .attr("y", +rect.attr("data-original-y") - 4);
+  
+  
+         if (isSmallScreen) {
+             // Show tooltip for small screens
+             tooltip.innerHTML = `
+                         <p><strong>${d.name || "N/A"}</strong></p>
+                         <p>Review Score: ${d.reviewScore || "N/A"}</p>
+                         <p>Release Date: ${d.releaseDate || "N/A"}</p>
+                         <p>Price: $${d.price || "0.00"}</p>
+                         <p>Copies Sold: ${d.copiesSold || "N/A"}</p>
+                         <p>Avg Playtime: ${parseFloat(d.avgPlaytime || 0).toFixed(1)} hours</p>
+                         <p>Publisher: ${d.publishers || "N/A"}</p>
+                         <div style="display: flex; align-items: center; gap: 10px;">
+                     <img src="dataset/gameIcon/${d.steamId}.jpg" alt="${d.name}" style="max-width: 300px; max-height: 200px; border: 1px solid #ccc; border-radius: 5px;">
+                     <div>
+                     </div>
+                 </div>
+             `;
+             tooltip.style.display = "block"; // Show tooltip
+             tooltip.style.opacity = 0; // Start hidden
+             tooltip.style.transform = "translateY(10px)";
+             setTimeout(() => {
+                 tooltip.style.opacity = 1;
+                 tooltip.style.transform = "translateY(0)";
+             }, 150);
+             tooltip.style.left = `${event.pageX + 10}px`;
+             tooltip.style.top = `${event.pageY + 10}px`;
+         } else {
+             //Add easing effect for the info section
+             infoSection.style.transition = "opacity 0.2s ease-in-out, transform 0.2s ease-in-out";
+             infoSection.style.opacity = 0;
+             infoSection.style.transform = "translateY(10px)";
+             setTimeout(() => {
+                 infoSection.classList.add("visible");
+                 updateInfoContent(d);
+                 infoSection.style.opacity = 1;
+                 infoSection.style.transform = "translateY(0)";
+             }, 300);
+         }
+     })
+     .on("mousemove", (event) => {
+         // Dynamically position tooltip
+         const isSmallScreen = window.innerWidth <= 768;
+         if (isSmallScreen) {
+             const tooltip = document.querySelector("#tooltip");
+             tooltip.style.left = `${event.pageX + 10}px`;
+             tooltip.style.top = `${event.pageY + 10}px`;
+         }w
+     })
+     .on("mouseout", function() {
+         const isSmallScreen = window.innerWidth <= 768;
+         const infoSection = document.querySelector("#info-section");
+  
+         const rect = d3.select(this); 
+         rect.interrupt();
+         // Restore the original attributes
+         rect.transition()
+             .duration(150)
+             .attr("fill", (d) => publisherColors[d.publisherClass] || "#fff")
+             .attr("width", blockSize)
+             .attr("height", blockSize)
+             .attr("x", rect.attr("data-original-x"))
+             .attr("y", rect.attr("data-original-y"));
+            
+         if (isSmallScreen) {
+             clearTimeout(tooltipTimeout); // Clear any previous timeouts
+             tooltipTimeout = setTimeout(() => {
+                 const tooltip = document.querySelector("#tooltip");
+                 tooltip.style.opacity = 0;
+                 tooltip.style.transform = "translateY(10px)";
+                 setTimeout(() => {
+                     tooltip.style.display = "none";
+                 }, 150);
+             }, 150);
+         } else {
+             infoSection.style.transition = "opacity 0.2s ease-in-out, transform 0.2s ease-in-out";
+                     infoSection.style.opacity = 0;
+                     infoSection.style.transform = "translateY(10px)";
+  
+  
+                     setTimeout(() => {
+                         infoSection.classList.remove("visible");
+                     }, 300);
+         }
+     });
+      
  
- 
-  // Add Tooltip Div
-  d3.select("body").append("div")
-    .attr("id", "tooltip")
-    .style("position", "absolute")
-    .style("background-color", "#fff")
-    .style("color", "#000")
-    .style("padding", "10px")
-    .style("border", "1px solid #ccc")
-    .style("border-radius", "5px")
-    .style("opacity", 0);
- 
- 
-  console.log("Rendered Blocks for Top 100 Games");
- }
+  
+  
+   // Add Tooltip Div
+   d3.select("body").append("div")
+     .attr("id", "tooltip")
+     .style("position", "absolute")
+     .style("background-color", "#fff")
+     .style("color", "#000")
+     .style("padding", "10px")
+     .style("border", "1px solid #ccc")
+     .style("border-radius", "5px")
+     .style("opacity", 0);
+  }
+  // Helper function to update the info section content
+  function updateInfoContent(d) {
+     document.querySelector(".game-name").textContent = d.name || "N/A";
+     document.querySelector(".game-review-score").textContent = d.reviewScore || "N/A";
+     document.querySelector(".game-release-date").textContent = d.releaseDate || "N/A";
+     document.querySelector(".game-price").textContent = `$${d.price || "0.00"}`;
+     document.querySelector(".game-copies-sold").textContent = d.copiesSold || "N/A";
+     document.querySelector(".game-playtime").textContent = `${parseFloat(d.avgPlaytime || 0).toFixed(1)} hours`;
+     document.querySelector(".game-publisher").textContent = d.publishers || "N/A";
+  
+  
+     const gameIcon = document.querySelector(".game-icon");
+     gameIcon.src = `dataset/gameIcon/${d.steamId}.jpg`;
+     gameIcon.alt = d.name || "Game Icon";
+     gameIcon.style.maxWidth = "800px"; // Restrict max width to 500px
+    gameIcon.style.height = "auto";  
+     gameIcon.onerror = () => {
+         gameIcon.src = "dataset/gameIcon/default.jpg";
+     };
+    }
  
  
   

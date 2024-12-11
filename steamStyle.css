@@ -11,6 +11,10 @@ body {
     line-height: 1.6;
     color: #fff;
     background-color: #000;
+    overflow-x: hidden;
+    
+    
+  
 }
 
 /* Vis1 Css */
@@ -31,6 +35,13 @@ body {
     max-width: 1200px;
     margin: 0 auto;
   }
+  #vis1, #vis2, #vis3, #vis4 {
+    background: none; /* Remove any background color */
+    border: none; /* Remove any borders */
+    padding: 0; /* Ensure no padding */
+    margin: 0; /* Ensure no margin */
+  }
+ 
    /* Individual Visualization Box */
   .vis-item {
     text-align: center;
@@ -92,6 +103,7 @@ body {
     align-items: center;
     text-align: center;
     background-color: black;
+    
 }
 
 .hero h1 {
@@ -127,13 +139,12 @@ body {
 /* Generic Page Style */
 .page {
     height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
+    background-color: black;
+   
+    
+   
 }
+
 
 /* block Section */
 .about {
@@ -174,33 +185,69 @@ body {
     margin: 0 auto;
     width: 100%;
   }
+  .game-icon {
+    max-height: 300px;
+    width: auto;
+    object-fit: contain; 
+    display: block;
+    margin: 0 auto;
+ }
+ 
    /* Block Visualization */
   #blockVisualization {
     margin: 0;
     width: 70%;
   }
-   /* Info Section */
-  #info-section {
-    position: absolute; /* Fixes position to the grid */
-    left: 450px; /* Adjust spacing from the right */
-    top: 5%; /* Adjust based on where you want the info section */
-    max-width: 80%; /* Restrict the width */
-    flex: 1;
-    visibility: hidden; /* Keep space but hide content initially */
-    opacity: 0; /* Smooth transition for visibility */
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start; /* Align content to the left */
-    gap: 10px;
-    border-radius: 5px;
-    width: 800px;
-    transition: visibility 0s, opacity 0.5s ease-in-out;
+  /* Info Section */
+ #info-section {
+  position: absolute; /* Fixes position to the grid */
+  left: 450px; /* Adjust spacing from the right */
+  top: 5%; /* Adjust based on where you want the info section */
+  max-width: 80%; /* Restrict the width */
+  flex: 1;
+  visibility: hidden; /* Keep space but hide content initially */
+  opacity: 0; /* Smooth transition for visibility */
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start; /* Align content to the left */
+  gap: 10px;
+  border-radius: 5px;
+  width: 800px;
+  transform: translateY(10px); /* Slightly below the initial position */
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+#info-section.visible {
+  visibility: visible; /* Make it visible */
+  opacity: 1;
+  transform: translateY(0);
   }
-  #info-section.visible {
-    visibility: visible; /* Make it visible */
-    opacity: 1;
-    }
+  /* Small screens: Hide info section */
+  @media (max-width: 768px) {
+      #info-section {
+      display: none; /* Hide the info section */
+      }
+  }
+
+  #tooltip {
+    position: absolute;
+    background-color: #000000;
+    color: #ffffff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    opacity: 0; /* Start hidden */
+    transform: translateY(10px); /* Slightly below initial position */
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out; /* Smooth transition */
+    display: none; /* Initially hidden */
+    z-index: 1000;
+}
+#tooltip.visible {
+    display: block; /* Make tooltip visible */
+    opacity: 1; /* Fully visible */
+    transform: translateY(0); /* Reset position */
+}
+
   /* Info Section Game Name */
   #info-section .game-name {
     font-size: 20px;
@@ -220,14 +267,9 @@ body {
     justify-content: flex-start;
     align-items: center;
     margin-top: 10px;
+    
   }
-   .game-icon {
-    width: 400px;
-    height: auto;
-    border: 1px solid #333;
-    border-radius: 5px;
-    margin-left: 10px; /* Space between icon and details */
-  }
+   
  
 
 /* bottom Section */
