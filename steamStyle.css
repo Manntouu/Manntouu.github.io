@@ -4,6 +4,12 @@
     padding: 0;
     box-sizing: border-box;
 }
+.box-notinuse{
+  background-color: aqua;
+  border: 1px solid rgb(232, 6, 6);
+  min-height:50px
+  
+}
 
 /* General Styles */
 body {
@@ -12,10 +18,32 @@ body {
     color: #fff;
     background-color: #000;
     overflow-x: hidden;
-    
-    
-  
 }
+
+/*Density Plot*/
+.density-plot-container {
+  text-align: center;
+  margin: 20px auto;
+  max-width: 900px;
+}
+#densityPlot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  background-color: #000; /* Optional background for better contrast */
+  padding: 20px; /* Optional padding around the plot */
+}
+
+/* Vis0 Pie chart*/
+#interactivePieChart{
+  display: flex;
+  justify-content: left;
+  align-items: left;
+}
+
 
 /* Vis1 Css */
 .container {
@@ -140,6 +168,7 @@ body {
 .page {
     height: 100vh;
     background-color: black;
+    scroll-margin-top: 100px;
    
     
    

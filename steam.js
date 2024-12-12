@@ -1,4 +1,197 @@
 const data = await d3.csv("dataset/1500 games.csv");
+/////////Density Plot/////////////
+async function renderDensityPlot(data) {
+  const margin = { top: 20, right: 30, bottom: 50, left: 50 };
+  const width = 800;
+  const height = 400;
+  const parseDate = d3.timeParse("%d-%m-%Y");
+  // Parse the data
+  data.forEach(d => {
+      d.date = parseDate(d.releaseDate);
+      d.price = parseFloat(d.price);
+  });
+
+  const filteredData = data.filter(d => d.date && d.price >= 0);
+
+  // Create scales
+  const xScale = d3.scaleTime()
+      .domain(d3.extent(filteredData, d => d.date))
+      .range([margin.left, width - margin.right]);
+
+  const yScale = d3.scaleLinear()
+      .domain([0, d3.max(filteredData, d => d.price)])
+      .nice()
+      .range([height - margin.bottom, margin.top]);
+
+  // Create bins
+  const bins = d3.bin()
+      .value(d => d.date) // Use raw date values for binning
+      .domain(xScale.domain())
+      .thresholds(xScale.ticks(30))(filteredData);
+
+  // Create SVG container
+  const svg = d3.select("#densityPlot")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .style("background-color", "#000");
+
+  // Create Tooltip Div
+  d3.select("body")
+      .append("div")
+      .attr("id", "densityTooltip")
+      .style("position", "absolute")
+      .style("background-color", "rgba(0, 0, 0, 0.5)")
+      .style("color", "#fff")
+      .style("padding", "10px")
+      .style("opacity", 0)
+      .style("display", "none")
+      .style("z-index", 1000);
+
+  // Map bar heights to the color scale
+  const colorScale = d3.scaleLinear()
+  .domain([0, d3.max(bins, d => d.length)])
+  .range(["#828282", "#990312"]);
+
+
+// Add rectangles for bins
+svg.selectAll("rect")
+  .data(bins)
+  .join("rect")
+  .attr("x", d => xScale(d.x0))
+  .attr("y", d => yScale(d.length))
+  .attr("width", d => Math.max(0, xScale(d.x1) - xScale(d.x0) - 1))
+  .attr("height", d => yScale(0) - yScale(d.length))
+  .attr("fill", d => colorScale(d.length))
+  .attr("stroke", "#000")
+  .attr("stroke-width", 0.5)
+  .on("mouseover", function (event, d) {
+      // Highlight hovered bar
+      d3.select(this)
+          .style("opacity", 1) // Fully visible for hovered bar
+          .attr("fill", "#ffffff"); // Change color for hovered bar
+
+      // Show tooltip
+      const tooltip = d3.select("#densityTooltip");
+      tooltip
+          .style("opacity", 1)
+          .style("display", "block")
+          .html(`
+              <p><strong>Bin:</strong> ${d3.timeFormat("%b %d, %Y")(d.x0)} - ${d3.timeFormat("%b %d, %Y")(d.x1)}</p>
+              <p><strong>Games:</strong> ${d.length}</p>
+          `)
+          .style("left", `${event.pageX + 10}px`)
+          .style("top", `${event.pageY + 10}px`);
+  })
+  .on("mousemove", (event) => {
+      // Update tooltip position
+      const tooltip = d3.select("#densityTooltip");
+      tooltip
+          .style("left", `${event.pageX + 10}px`)
+          .style("top", `${event.pageY + 10}px`);
+  })
+  .on("mouseout", function () {
+      // Reset bar opacity and color
+      svg.selectAll("rect")
+      .style("opacity", 1)
+      .attr("fill", d => colorScale(d.length));
+      // Hide tooltip
+      const tooltip = d3.select("#densityTooltip");
+      tooltip.style("opacity", 0).style("display", "none");
+  });
+
+
+  // Add axes
+  svg.append("g")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(xScale).ticks(10).tickFormat(d3.timeFormat("%b %Y")));
+
+  svg.append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(yScale));
+
+
+  console.log("Rendered Density Plot");
+}
+
+/////////1st pie chart/////////////
+async function renderInteractivePieChart() {
+  // Aggregate data to calculate the total copies sold by publisher class
+  const aggregatedData = d3.rollup(
+      data,
+      v => d3.sum(v, d => parseFloat(d.copiesSold)),
+      d => d.publisherClass
+  );
+
+
+  const pieData = Array.from(aggregatedData, ([key, value]) => ({
+      publisherClass: key,
+      copiesSold: value
+  }));
+
+
+  // Dimensions
+  const width = 400;
+  const height = 400;
+  const radius = Math.min(width, height) / 2 - 20;
+
+
+  const colorScale = d3.scaleOrdinal()
+      .domain(pieData.map(d => d.publisherClass))
+      .range(["#808080", "#FFFACD", "#AFEEEE"]);
+
+
+  const svg = d3.select("#interactivePieChart")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g")
+      .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+
+  const pie = d3.pie().value(d => d.copiesSold).sort(null);
+  const arc = d3.arc().innerRadius(0).outerRadius(radius);
+  const hoverArc = d3.arc().innerRadius(0).outerRadius(radius + 15);
+
+
+  // Add pie chart paths
+  const paths = svg.selectAll("path")
+      .data(pie(pieData))
+      .join("path")
+      .attr("d", arc)
+      .attr("fill", d => colorScale(d.data.publisherClass))
+      .style("opacity", 1)
+      .on("mouseover", function (event, d) {
+          // Reset all sections to default before hover
+          paths.transition()
+              .duration(200)
+              .style("opacity", 0.3); // Dim all sections
+
+
+          // Highlight hovered section
+          d3.select(this)
+              .transition()
+              .duration(200)
+              .attr("d", hoverArc)
+              .style("opacity", 1);
+      })
+      .on("mouseout", function () {
+          // Reset all sections to default
+          paths.transition()
+              .duration(200)
+              .attr("d", arc)
+              .style("opacity", 1); // Restore all sections
+      });
+}
+
+
+
+
+
+
+
+
+
 /////////////////////Vis 1a: Revenue by publisher class//////////////
 async function renderFirstVis1() {
     console.log(data);
@@ -571,7 +764,7 @@ async function render4Visualizations() {
      .style("border-radius", "5px")
      .style("opacity", 0);
   }
-  // Helper function to update the info section content
+  // Helper function for vis8//
   function updateInfoContent(d) {
      document.querySelector(".game-name").textContent = d.name || "N/A";
      document.querySelector(".game-review-score").textContent = d.reviewScore || "N/A";
@@ -585,7 +778,7 @@ async function render4Visualizations() {
      const gameIcon = document.querySelector(".game-icon");
      gameIcon.src = `dataset/gameIcon/${d.steamId}.jpg`;
      gameIcon.alt = d.name || "Game Icon";
-     gameIcon.style.maxWidth = "800px"; // Restrict max width to 500px
+     gameIcon.style.maxWidth = "570px"; // Restrict max width to 500px
     gameIcon.style.height = "auto";  
      gameIcon.onerror = () => {
          gameIcon.src = "dataset/gameIcon/default.jpg";
@@ -593,13 +786,12 @@ async function render4Visualizations() {
     }
  
  
-  
-   
-   renderFirstVis1();
-   render4Visualizations();
-
-   render2PriceBin();
- renderBlockVisualization();
+  d3.csv("dataset/1500 games.csv").then(renderDensityPlot);
+  renderInteractivePieChart();
+  renderFirstVis1();
+  render4Visualizations();
+  render2PriceBin();
+  renderBlockVisualization();
 
    
    
